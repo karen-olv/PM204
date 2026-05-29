@@ -1,0 +1,118 @@
+import streamlit as st
+
+st.set_page_config(page_title="Programacion Movil")
+
+if 'seccion' not in st.session_state:
+    st.session_state.seccion = 1
+
+st.title("Programacion Movil")
+st.write("ISC Ivan Isay Guerra Lopez")
+st.write("Alumna: Karen Olvera Ramirez")
+
+# reglas
+if st.session_state.seccion == 1:
+    st.header("Reglas")
+    st.markdown("""
+    * Asistencia mínima: 80% para derecho a evaluación.
+    * Tolerancia: 10 minutos.
+    * Faltas: Justificar en máximo 24 horas vía correo institucional.
+    * Plagio: Calificación de 0 inmediata para todos los involucrados.
+    * Prohibido: Alimentos, líquidos y uso de audífonos en el aula.
+    """)
+    
+    q1 = st.radio("¿Porcentaje de asistencia para derecho a evaluación?", ["70%", "80%", "90%"])
+    q2 = st.radio("¿Tiempo límite para justificar una falta?", ["12h", "24h", "48h"])
+    acuerdo = st.checkbox("Check de Compromiso: Acepto el reglamento")
+
+    if st.button("Siguiente"):
+        if q1 == "80%" and q2 == "24h" and acuerdo:
+            st.session_state.seccion = 2
+            st.rerun()
+        else:
+            st.error("Revisa las respuestas o marca el compromiso.")
+
+# porcentajes de evaluacion
+elif st.session_state.seccion == 2:
+    st.header("Porcentajes de evaluación")
+    st.write("**Parcial 1 y 2:**")
+    st.write("- Conocimiento: 40%")
+    st.write("- Desempeño: 20%")
+    st.write("- Producto: 30%")
+    st.write("- Proyecto Integrador: 10%")
+    st.write("**Parcial 3:**")
+    st.write("- Proyecto Integrador: 50%")
+    
+    q3 = st.number_input("Valor del Proyecto Integrador en el tercer parcial (%)", 0, 100)
+    q4 = st.selectbox("¿Qué porcentaje tiene la Evidencia de Conocimiento?", ["10%", "20%", "40%"])
+    acuerdo = st.checkbox("Check de Compromiso: Entiendo la evaluación")
+
+    if st.button("Siguiente"):
+        if q3 == 50 and q4 == "40%" and acuerdo:
+            st.session_state.seccion = 3
+            st.rerun()
+        else:
+            st.error("Datos incorrectos.")
+
+# metas de aprendizaje
+elif st.session_state.seccion == 3:
+    st.header("Objetivos")
+    st.subheader("General")
+    st.write("Desarrollar aplicaciones móviles mediante lenguajes, entornos de diseño y herramientas de programación.")
+    
+    st.subheader("Particular")
+    st.write("Dominio de React Native, JavaScript, componentes, navegación y APIs.")
+    
+    q5 = st.text_input("Framework principal de la materia:")
+    q6 = st.radio("¿Se aprenderá comunicación con APIs?", ["Sí", "No"])
+    acuerdo = st.checkbox("Check de Compromiso: Objetivo comprendido")
+
+    if st.button("Finalizar"):
+        if "react" in q5.lower() and q6 == "Sí" and acuerdo:
+            st.session_state.seccion = 4
+            st.rerun()
+        else:
+            st.error("Verifica la información.")
+
+# plan de asignatura 
+elif st.session_state.seccion == 4:
+    st.success("¡DESBLOQUEADO! PLAN DE ASIGNATURA COMPLETO")
+    
+    st.subheader("Ficha de Supervivencia: Programación Móvil")
+    st.markdown("""
+    **Profesor:** ISC Ivan Isay Guerra López
+    
+    **Competencias:** Desarrollarás software multiplataforma utilizando programación orientada a objetos, frameworks y bases de datos.
+    """)
+
+    st.divider()
+    st.subheader("Ruta de Aprendizaje")
+    
+    # unidades
+    unidades = {
+        "Unidad": ["I", "II", "III", "IV"],
+        "Título": ["Introducción", "Diseño", "Programación", "Publicación"],
+        "Temas": ["Fundamentos,Tipos de datos y expresiones,Entornos y Estructura",
+                   "Desarrollo de aplicaciones y Notificaciones", "Gestion de sensores",
+                     "Herramientas para empaquetado y despliegue"]
+    }
+    st.table(unidades)
+
+    st.divider()
+    st.subheader("Calendario de Evaluaciones")
+    evaluaciones = {
+        "Parcial": ["1ro", "2do", "3ro", "Final"],
+        "Fecha": ["01-Jun-26", "06-Jul-26", "10-Ago-26", "17-Ago-26"]
+    }
+    st.table(evaluaciones)
+
+    st.info("""
+    **Herramientas de apoyo:**
+    - Documentación de React Native.
+    - Apoyo de herramientas como ChatGPT o Gemini.
+    - GitHub (Push y Commits obligatorios).
+    """)
+    
+    if st.button("Reiniciar"):
+        st.session_state.seccion = 1
+        st.rerun()
+        
